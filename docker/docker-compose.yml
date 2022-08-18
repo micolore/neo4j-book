@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  neo4j:
+    user: '1000'
+    container_name: neo4j
+    image: neo4j:4.3.4-community
+    ports:
+      - '17474:7474'
+      - '17687:7687'
+    restart: always
+    volumes:
+      - ./data:/var/lib/neo4j/data
+      - ./logs:/var/lib/neo4j/logs
+      - /tmp:/tmp
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1024M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50M"
+        max-file: "10"
+    environment:
+      - NEO4J_AUTH=neo4j/123456
+networks:
+  default:
+    external:
+      name: network0
